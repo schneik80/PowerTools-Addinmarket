@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<!-- SPDX-License-Identifier: GPL-3.0-or-later -->
+<!-- Copyright (C) 2026 IMA LLC -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add-in Market</title>
+    <link rel="stylesheet" href="marketplace.css">
+</head>
+<body>
+
+    <header>
+        <div class="header-top">
+            <h1>Add-in Market</h1>
+        </div>
+        <div class="header-controls">
+            <input id="search" type="search" placeholder="Search add-ins..." autocomplete="off">
+            <label class="installed-filter">
+                <input id="installed-only" type="checkbox">
+                <span>Installed only</span>
+            </label>
+        </div>
+        <div class="tab-bar" role="tablist">
+            <button class="tab-btn active" data-tab="core" role="tab" aria-selected="true">Core Plugins</button>
+            <button class="tab-btn" data-tab="community" role="tab" aria-selected="false">Community Plugins</button>
+            <div class="tab-underline" aria-hidden="true"></div>
+        </div>
+    </header>
+
+    <main id="plugin-list" aria-live="polite">
+        <div class="empty-state">Loading...</div>
+    </main>
+
+    <footer>
+        <div id="status" class="status" aria-live="polite"></div>
+        <div id="community-notice" class="community-notice" hidden>
+            Community add-ins are third-party software. Review their source code before installing.
+        </div>
+    </footer>
+
+    <script src="marketplace.js"></script>
+</body>
+</html>

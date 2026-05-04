@@ -1,0 +1,13 @@
+{
+	"autodeskProduct":	"Fusion",
+	"type":	"addin",
+	"id":	"4f333ab5-9190-4f23-aae2-f85e00890538",
+	"author":	"IMA LLC",
+	"description":	{
+		"":	"Browse and install Fusion add-ins from a curated marketplace"
+	},
+	"version":	"1.0",
+	"runOnStartup":	true,
+	"supportedOS":	"windows|mac",
+	"editEnabled":	true
+}

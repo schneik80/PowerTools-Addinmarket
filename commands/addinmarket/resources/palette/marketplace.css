@@ -1,0 +1,434 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) 2026 IMA LLC
+ *
+ * Fusion-themed marketplace palette.
+ *
+ * Theme strategy: dark tokens are the hard default in :root (Fusion is almost
+ * always dark). JS sets html[data-theme] via getTheme RPC on every page load
+ * and on every visibilitychange, which overrides these defaults. There is no
+ * @media (prefers-color-scheme) rule — it is unreliable in Fusion's embedded
+ * WebView and would conflict with the explicit Python-driven override. */
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
+
+/* ─── Dark tokens (safe default — Fusion is dark by default) ─ */
+:root {
+    --bg:            #2a3442;
+    --bg-deep:       #1e2838;
+    --bg-mid:        #242e39;
+    --bg-row:        #2a3442;
+    --bg-row-alt:    #252f3e;
+    --bg-hover:      #242e39;
+    --bg-input:      #1e2838;
+    --bg-toggle-off: #4a5568;
+    --bg-nav:        #323e50;
+
+    --text:          #e0e6ec;
+    --text-strong:   #ffffff;
+    --text-muted:    #8a9bb0;
+    --text-faint:    #5c6f84;
+
+    --border:        #3d4f66;
+    --border-deep:   #1e2838;
+    --border-input:  #3d4f66;
+    --border-btn:    #4a5a70;
+
+    --accent:        #0696d7;
+    --accent-hover:  #0881bb;
+    --accent-dim:    #1a4060;
+    --warn:          #e8a838;
+}
+
+/* ─── Explicit theme overrides (set by JS via getTheme RPC) ── */
+html[data-theme="light"] {
+    --bg:            #f4f4f4;
+    --bg-deep:       #e0e0e0;
+    --bg-mid:        #ebebeb;
+    --bg-row:        #f4f4f4;
+    --bg-row-alt:    #eeeeee;
+    --bg-hover:      #c2c2c2;
+    --bg-input:      #ffffff;
+    --bg-toggle-off: #bbbbbb;
+    --bg-nav:        #ffffff;
+
+    --text:          #333333;
+    --text-strong:   #1a1a1a;
+    --text-muted:    #666666;
+    --text-faint:    #999999;
+
+    --border:        #c0c0c0;
+    --border-deep:   #d0d0d0;
+    --border-input:  #b8b8b8;
+    --border-btn:    #aaaaaa;
+
+    --accent:        #0696d7;
+    --accent-hover:  #0881bb;
+    --accent-dim:    #a8d4ef;
+    --warn:          #c07820;
+}
+
+html[data-theme="dark"] {
+    --bg:            #2a3442;
+    --bg-deep:       #1e2838;
+    --bg-mid:        #242e39;
+    --bg-row:        #2a3442;
+    --bg-row-alt:    #252f3e;
+    --bg-hover:      #242e39;
+    --bg-input:      #1e2838;
+    --bg-toggle-off: #4a5568;
+    --bg-nav:        #323e50;
+
+    --text:          #e0e6ec;
+    --text-strong:   #ffffff;
+    --text-muted:    #8a9bb0;
+    --text-faint:    #5c6f84;
+
+    --border:        #3d4f66;
+    --border-deep:   #1e2838;
+    --border-input:  #3d4f66;
+    --border-btn:    #4a5a70;
+
+    --accent:        #0696d7;
+    --accent-hover:  #0881bb;
+    --accent-dim:    #1a4060;
+    --warn:          #e8a838;
+}
+
+/* ─── Reset ──────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Artifakt Element', 'Montserrat', Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    color: var(--text);
+    background: var(--bg);
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+p, caption, th, tbody { font-family: Helvetica, Arial, sans-serif; }
+
+/* ─── Header ─────────────────────────────────────────────── */
+header {
+    flex: 0 0 auto;
+    position: relative;
+    z-index: 1;
+    padding: 10px 12px 0;
+    background: var(--bg-nav);
+    border-bottom: 1px solid var(--border-deep);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.header-top {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-strong);
+    flex: 1 1 auto;
+    font-family: 'Montserrat', 'Artifakt Element', sans-serif;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+#search {
+    flex: 1 1 auto;
+    padding: 6px 8px;
+    background: var(--bg-input);
+    border: 1px solid var(--border-input);
+    border-radius: 2px;
+    color: var(--text);
+    font: inherit;
+    outline: none;
+}
+#search:focus { border-color: var(--accent); }
+#search::placeholder { color: var(--text-faint); }
+
+.installed-filter {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--text-muted);
+    font-size: 11px;
+    cursor: pointer;
+    white-space: nowrap;
+    user-select: none;
+}
+.installed-filter input[type="checkbox"] {
+    accent-color: var(--accent);
+    cursor: pointer;
+}
+
+/* ─── Tab bar ────────────────────────────────────────────── */
+.tab-bar {
+    display: flex;
+    gap: 0;
+    position: relative;
+    background: var(--bg-nav);
+    padding: 0 4px;
+}
+
+.tab-btn {
+    flex: 0 0 auto;
+    position: relative;
+    z-index: 1;
+    padding: 7px 16px 6px;
+    border: none;
+    background: transparent;
+    color: var(--text);
+    font-family: 'Montserrat', 'Artifakt Element', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    outline: none;
+    transition: color 0.2s;
+}
+
+.tab-btn:hover { color: var(--accent); }
+
+.tab-btn.active { color: var(--accent); }
+
+.tab-underline {
+    position: absolute;
+    bottom: 0;
+    height: 2px;
+    background: var(--accent);
+    transition: left 0.3s ease, width 0.3s ease;
+    pointer-events: none;
+}
+
+/* ─── Plugin list ────────────────────────────────────────── */
+main {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    background: var(--bg);
+}
+
+.empty-state {
+    padding: 32px 16px;
+    text-align: center;
+    color: var(--text-faint);
+    font-style: italic;
+}
+
+/* Each plugin row */
+.plugin-row {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border-deep);
+    background: var(--bg-row);
+    gap: 12px;
+    transition: background 0.1s;
+}
+.plugin-row:hover { background: var(--bg-hover); }
+
+.plugin-info {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.plugin-name-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 3px;
+}
+
+.plugin-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-strong);
+}
+
+.plugin-meta {
+    font-size: 10px;
+    color: var(--text-faint);
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+.plugin-description {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.4;
+    margin: 0;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+/* Update badge */
+.badge-update {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 9px;
+    font-weight: 500;
+    color: var(--warn);
+    border: 1px solid var(--warn);
+    border-radius: 2px;
+    padding: 1px 5px;
+    white-space: nowrap;
+}
+
+/* Readme link (community tab) */
+.readme-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 10px;
+    color: var(--accent);
+    text-decoration: none;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    font-size: 10px;
+    margin-top: 4px;
+}
+.readme-link:hover { color: var(--accent-hover); text-decoration: underline; }
+.readme-link svg { flex-shrink: 0; }
+
+/* Right-side controls */
+.plugin-controls {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    padding-top: 1px;
+}
+
+/* ─── Toggle switch ──────────────────────────────────────── */
+.toggle-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.toggle-wrap input[type="checkbox"] {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+
+.toggle-track {
+    position: relative;
+    width: 34px;
+    height: 18px;
+    background: var(--bg-toggle-off);
+    border-radius: 9px;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+
+.toggle-wrap input:checked + .toggle-track {
+    background: var(--accent);
+}
+
+.toggle-thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 14px;
+    height: 14px;
+    background: #fff;
+    border-radius: 50%;
+    transition: left 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.35);
+}
+
+.toggle-wrap input:checked ~ .toggle-track .toggle-thumb {
+    left: 18px;
+}
+
+/* Disabled state while installing */
+.toggle-wrap.busy .toggle-track {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ─── Tooltip ────────────────────────────────────────────── */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    min-width: 90px;
+    background-color: #484848;
+    color: #fff;
+    text-align: center;
+    border-radius: 10px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.2s;
+    font-size: 11px;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* ─── Footer ─────────────────────────────────────────────── */
+footer {
+    flex: 0 0 auto;
+    padding: 6px 12px;
+    border-top: 1px solid var(--border-deep);
+    background: var(--bg-nav);
+}
+
+.status {
+    font-size: 11px;
+    color: var(--text-muted);
+    min-height: 1em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+.status.error { color: #e05252; }
+.status.success { color: #6abf69; }
+
+.community-notice {
+    margin-top: 4px;
+    padding: 4px 8px;
+    font-size: 10px;
+    font-family: Helvetica, Arial, sans-serif;
+    color: var(--warn);
+    background: transparent;
+    border: 1px solid var(--warn);
+    border-radius: 2px;
+    line-height: 1.4;
+}
