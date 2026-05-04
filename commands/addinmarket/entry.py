@@ -151,12 +151,13 @@ def _show_palette():
             700,    # width
             540,    # height
         )
-        _palette.dockingState = adsk.core.PaletteDockingStates.PaletteDockStateFloating
-
         futil.add_handler(_palette.incomingFromHTML, palette_incoming,
                           local_handlers=local_handlers)
         futil.add_handler(_palette.closed, palette_closed,
                           local_handlers=local_handlers)
+
+    if _palette.dockingState == adsk.core.PaletteDockingStates.PaletteDockStateFloating:
+        _palette.dockingState = adsk.core.PaletteDockingStates.PaletteDockStateRight
 
     _palette.isVisible = True
     _palette.sendInfoToHTML("setTheme", _fusion_theme())
