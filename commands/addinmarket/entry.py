@@ -12,6 +12,7 @@ add-ins live via app.scripts without requiring a Fusion restart.
 
 import json
 import os
+import pathlib
 import subprocess
 import traceback
 
@@ -40,10 +41,10 @@ TAB_ID = config.tools_tab_id
 PANEL_ID = config.my_panel_id
 
 ICON_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "")
-PALETTE_HTML = os.path.join(
+PALETTE_HTML = pathlib.Path(
     os.path.dirname(os.path.abspath(__file__)),
     "resources", "palette", "marketplace.html",
-)
+).as_uri()
 
 app: adsk.core.Application
 ui: adsk.core.UserInterface
