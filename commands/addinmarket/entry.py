@@ -14,7 +14,6 @@ import json
 import os
 import pathlib
 import subprocess
-import traceback
 
 import adsk.core
 import adsk.fusion
@@ -222,7 +221,7 @@ def palette_incoming(args: adsk.core.HTMLEventArgs):
             _reply(rpc_id, False, f"Unknown method: {method}")
 
     except Exception as exc:
-        futil.log(f"{CMD_NAME} RPC error in {method}: {traceback.format_exc()}")
+        futil.handle_error(f"{CMD_NAME} RPC")
         _reply(rpc_id, False, str(exc))
 
 

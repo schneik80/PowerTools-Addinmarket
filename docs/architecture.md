@@ -315,10 +315,15 @@ PowerTools-Addinmarket/
 │   ├── .gitkeep                       Keeps the directory in git
 │   └── installed.json                 Runtime state (gitignored)
 ├── lib/
-│   └── fusionAddInUtils/              Vendored Autodesk sample utilities
+│   └── fusionAddInUtils/              Shared utilities, vendored identically across all 9 PowerTools add-ins
 │       ├── __init__.py
-│       ├── event_utils.py
-│       └── general_utils.py
+│       ├── general_utils.py          log(), clipText(), isSaved(), handle_error(), perf_timer()
+│       ├── event_utils.py            add_handler(), clear_handlers()
+│       ├── attributes_utils.py       attribute enumeration/formatting helpers
+│       ├── cache_utils.py            project/folder/param-doc JSON cache helpers
+│       ├── date_utils.py             next_business_day(), compute_quick_dates()
+│       ├── log_utils.py              default_log_directory(), open_live_log_viewer()
+│       └── upload_utils.py           wait_for_upload()
 └── docs/
     ├── AddinMarket.md                 User guide + C4 + sequence diagrams
     └── architecture.md               This document
