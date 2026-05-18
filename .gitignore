@@ -157,8 +157,11 @@ docs.json
 data.json
 hub.json
 
-# Cache folder — keep directory stub, ignore runtime state
-cache/installed.json
+# Cache folders
+cache/
+.claude/
+.cursor/rules/
+.github/
 
 # Marketplace local overrides
 data/*.local.json
