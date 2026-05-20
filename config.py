@@ -7,6 +7,13 @@ import platform
 from .lib import fusionAddInUtils as futil
 
 DEBUG = True
+
+# When True, start a debugpy server on startup so Zed (or any DAP client) can attach.
+# Leave False for shipping builds.
+WAIT_FOR_DEBUGGER = False
+DEBUGGER_PORT = 5678
+DEBUGGER_BLOCK_UNTIL_ATTACHED = False  # set True to pause run() until Zed attaches
+
 ADDIN_NAME = os.path.basename(os.path.dirname(__file__))
 COMPANY_NAME = "IMA LLC"
 

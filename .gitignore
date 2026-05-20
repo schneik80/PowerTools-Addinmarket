@@ -127,6 +127,10 @@ dmypy.json
 .vscode/
 .DS_Store
 
+# Zed debugger config — regenerated per machine by NewAddIn/scripts/zed-enable-addin.sh
+# (contains absolute paths and a webdeploy hash that rotates on Fusion upgrades).
+.zed/
+
 # General
 .DS_Store
 .AppleDouble
