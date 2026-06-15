@@ -73,33 +73,19 @@ def start():
     )
     futil.add_handler(cmd_def.commandCreated, command_created)
 
-    # ToolsTab is a built-in Fusion tab — get it, never create or delete it.
-    workspace = ui.workspaces.itemById(WORKSPACE_ID)
-    tb_tab = workspace.toolbarTabs.itemById(TAB_ID)
-
-    panel = tb_tab.toolbarPanels.itemById(PANEL_ID)
-    if not panel:
-        panel = tb_tab.toolbarPanels.add(PANEL_ID, config.my_panel_name, "", False)
-
-    ctl = panel.controls.itemById(CMD_ID)
-    if ctl:
-        ctl.deleteMe()
-    ctl = panel.controls.addCommand(cmd_def)
-    ctl.isPromoted = IS_PROMOTED
+    panel = futil.get_or_create_panel(WORKSPACE_ID, TAB_ID, config.my_tab_name, PANEL_ID, config.my_panel_name, config.my_panel_after)
+    if panel:
+        ctl = panel.controls.itemById(CMD_ID)
+        if ctl:
+            ctl.deleteMe()
+        ctl = panel.controls.addCommand(cmd_def)
+        ctl.isPromoted = IS_PROMOTED
 
 
 def stop():
     global _palette
 
-    workspace = ui.workspaces.itemById(WORKSPACE_ID)
-    panel = workspace.toolbarPanels.itemById(PANEL_ID)
-    if panel:
-        ctl = panel.controls.itemById(CMD_ID)
-        if ctl:
-            ctl.deleteMe()
-        if panel.controls.count == 0:
-            panel.deleteMe()
-
+    futil.remove_from_panel(WORKSPACE_ID, PANEL_ID, TAB_ID, CMD_ID)
     cmd_def = ui.commandDefinitions.itemById(CMD_ID)
     if cmd_def:
         cmd_def.deleteMe()

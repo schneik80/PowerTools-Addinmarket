@@ -23,7 +23,7 @@ def run(context):
                 debugpy.wait_for_client()
 
         commands.start()
-    except:
+    except Exception:
         futil.handle_error('run')
 
 
@@ -31,5 +31,5 @@ def stop(context):
     try:
         futil.clear_handlers()
         commands.stop()
-    except:
+    except Exception:
         futil.handle_error('stop')

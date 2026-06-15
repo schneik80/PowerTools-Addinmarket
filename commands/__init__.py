@@ -3,6 +3,8 @@
 
 from .addinmarket import entry as addinmarket
 
+from ..lib import fusionAddInUtils as futil
+
 commands = [
     addinmarket,
 ]
@@ -10,9 +12,15 @@ commands = [
 
 def start():
     for command in commands:
-        command.start()
+        try:
+            command.start()
+        except Exception:
+            futil.handle_error(command.__name__)
 
 
 def stop():
     for command in commands:
-        command.stop()
+        try:
+            command.stop()
+        except Exception:
+            futil.handle_error(command.__name__)
