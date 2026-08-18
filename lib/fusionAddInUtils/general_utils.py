@@ -20,6 +20,11 @@ app = adsk.core.Application.get()
 ui = app.userInterface
 
 # Attempt to read DEBUG and PERF_TRACE flags from parent config.
+# CAUTION: config.py imports fusionAddInUtils BEFORE defining its flags, so when
+# config's import is what first triggers this module, the getattr calls below
+# run against a partially initialized config module and capture False -
+# permanently disabling logging however config.DEBUG is set. _refresh_flags()
+# re-reads them lazily at log time, when config is guaranteed to be complete.
 try:
     from ... import config
 
@@ -28,6 +33,18 @@ try:
 except Exception:
     DEBUG = False
     PERF_TRACE = False
+
+
+def _refresh_flags() -> None:
+    """Re-read DEBUG/PERF_TRACE from the (now complete) config."""
+    global DEBUG, PERF_TRACE
+    try:
+        from ... import config
+
+        DEBUG = bool(getattr(config, "DEBUG", DEBUG))
+        PERF_TRACE = bool(getattr(config, "PERF_TRACE", PERF_TRACE))
+    except Exception:
+        pass  # keep whatever we had - the logger must never raise
 
 
 def log(
@@ -47,7 +64,9 @@ def log(
     force_console -- Retained for backward compatibility. It no longer
                      overrides the config.DEBUG gate.
     """
-    # Every log destination below is gated on config.DEBUG.
+    # Every log destination below is gated on config.DEBUG. The flags are
+    # re-read here rather than trusted from import time; see the CAUTION above.
+    _refresh_flags()
     if not DEBUG:
         return
 
@@ -126,6 +145,7 @@ def perf_timer(label: str, context: str = ""):
 
     Has zero runtime cost (no timing overhead, no log write) when PERF_TRACE is False.
     """
+    _refresh_flags()
     if not PERF_TRACE:
         yield
         return
