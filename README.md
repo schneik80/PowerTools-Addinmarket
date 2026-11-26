@@ -71,3 +71,13 @@ The shared library at `lib/fusionAddInUtils` is vendored byte-for-byte identical
 ---
 
 *Copyright © 2026 IMA LLC. All rights reserved.*
+
+## Packaging a Fusion add-in release
+
+From the repository root, check out the release commit and run this command with Git (Bash or Git Bash). It packages the tracked runtime files under the folder name Fusion expects.
+
+```sh
+git archive --format=zip --prefix=PowerTools-Addinmarket/ --output=PowerTools-Addinmarket-universal.zip HEAD -- PowerTools-Addinmarket.manifest PowerTools-Addinmarket.py commands config.py data docs lib LICENSE
+```
+
+Upload `PowerTools-Addinmarket-universal.zip` as an asset of a stable GitHub Release. Use a numeric tag such as `v1.1.1` matching the version in `PowerTools-Addinmarket.manifest`.
